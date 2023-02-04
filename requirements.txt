@@ -1,0 +1,10 @@
+matplotlib
+torch
+pillow >= 9.4.0
+opencv-python
+pandas
+requests
+torchvision
+pyyaml
+tqdm
+seaborn
