@@ -1,5 +1,4 @@
 __pycache__/
 local.ipynb
 *.pt
-*_processed.jpg
-*_processed.png
+*_processed.*
