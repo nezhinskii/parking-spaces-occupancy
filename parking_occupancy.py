@@ -3,6 +3,7 @@ import re
 import matplotlib.path as mplPath
 import torch
 from PIL import Image, ImageDraw
+from pathlib import Path
 
 class ParkingPlace:
     def __init__(self, x_coords, y_coords):
@@ -45,4 +46,7 @@ def show_occupancy(labels_path, image_path):
             draw.polygon(xy = [point for point in zip(place.x_coords, place.y_coords)], fill = (255, 0, 0, 40), outline = (255, 0, 0), width = 2)
         else:
             draw.polygon(xy = [point for point in zip(place.x_coords, place.y_coords)], fill = (0, 255, 0, 40), outline = (0, 255, 0), width = 2)
+            
+    path = Path(image_path)   
+    image.save("{0}\{1}_processed{2}".format(path.parent, path.stem, path.suffix))
     return image
