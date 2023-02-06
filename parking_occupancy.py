@@ -58,13 +58,10 @@ def analyze_parking_spaces(labels, source):
     else:
         source = Path(source)
         if source.is_dir():
-            images = [str(image) for image in source.glob('**/*.jpg')]
+            images = [str(image) for image in source.glob('**/*.*')]
+            images = [image for image in images if image.endswith(('.jpg', '.png', '.jpeg'))]
         else:
             images = [str(source)]
 
     for image in images:
         image_processing(parking_places, image)
-
-
-analyze_parking_spaces(labels = 'examples/several_images/parking_places.csv', 
-    source = ['examples/several_images/2015-12-18_0748.jpg', 'examples/several_images/2015-12-18_0948.jpg'])
