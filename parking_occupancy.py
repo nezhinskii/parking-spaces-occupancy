@@ -2,7 +2,8 @@ import csv
 import re
 import matplotlib.path as mplPath
 import torch
-from PIL import Image, ImageDraw
+import cv2
+import numpy as np
 from pathlib import Path
 
 class ParkingPlace:
@@ -18,12 +19,11 @@ class ParkingPlace:
         return bbPath.contains_point((x, y))
 
 def image_processing(parking_places, image_path):
-    image = Image.open(image_path)
-    draw = ImageDraw.Draw(image, 'RGBA') 
+    image = cv2.imread(image_path)
 
     model = torch.hub.load('ultralytics/yolov5', 'yolov5m')
     results = model(image_path).pandas().xyxy[0].values
-    
+
     for place in parking_places:
         flag = False
         for bb in results:
@@ -31,16 +31,17 @@ def image_processing(parking_places, image_path):
                 flag = True
                 break
         if flag:
-            draw.polygon(xy = [point for point in zip(place.x_coords, place.y_coords)], fill = (255, 0, 0, 40), outline = (255, 0, 0), width = 2)
+            color = (0, 0, 255)
         else:
-            draw.polygon(xy = [point for point in zip(place.x_coords, place.y_coords)], fill = (0, 255, 0, 40), outline = (0, 255, 0), width = 2)
+            color = (0, 255, 0)
+        image = cv2.polylines(image, [np.column_stack((place.x_coords, place.y_coords))], True, color, 2)
 
     for bb in results:
         if bb[5] == 2 or bb[5] == 7:
-            draw.rectangle(xy = [(bb[0], bb[1]), (bb[2], bb[3])], outline = (255, 255, 0), width = 3)
+            image = cv2.rectangle(image, (int(bb[0]), int(bb[1])), (int(bb[2]), int(bb[3])), (255, 0, 255), 5)
     
-    path = Path(image_path)   
-    image.save("{0}/{1}_processed{2}".format(path.parent, path.stem, path.suffix))
+    path = Path(image_path)
+    cv2.imwrite("{0}/{1}_processed{2}".format(path.parent, path.stem, path.suffix), image)
     return image
 
 def analyze_parking_spaces(labels, source):
@@ -63,5 +64,10 @@ def analyze_parking_spaces(labels, source):
         else:
             images = [str(source)]
 
+    results = []
     for image in images:
-        image_processing(parking_places, image)
+        results.append(image_processing(parking_places, image))
+        
+    if len(results) == 1:
+        return results[0]
+    return results
