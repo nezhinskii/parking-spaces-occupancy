@@ -7,7 +7,7 @@ import torch
 
 @st.cache_data(show_spinner=False)
 def load_model():
-    return po.ParkingOccupancy(torch.hub.load('ultralytics/yolov5', 'custom', path='detection\coco-voc.pt', verbose=False, force_reload=True))
+    return po.ParkingOccupancy(torch.hub.load('ultralytics/yolov5', 'custom', path='weights\coco-voc.pt', verbose=False, force_reload=True))
 
 def upload_source():
     uploaded_csv = st.file_uploader("Upload parking spaces annotation", type = [".csv", ".txt"])
