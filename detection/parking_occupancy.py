@@ -17,7 +17,7 @@ class ParkingPlace:
         return bbPath.contains_point((x, y))
 
 class ParkingOccupancy:
-    LINE_THIKNESS = 3
+    LINE_THIKNESS = 2
     FREE_COLOR = (0, 255, 0)
     BUSY_COLOR = (0, 0, 255)
     DEFAULT_COLOR = (255,255,255)
@@ -27,12 +27,18 @@ class ParkingOccupancy:
     def __init__(self, model):
         self.model = model
 
-    def load_spaces_annotation(self, labels):
+    def load_spaces_annotation_csv(self, labels):
         self.parking_places = []
         for _, row in labels.iterrows():
             coords = re.findall(r'(?<=\[)(?:\d+,?)+(?=\])',row[5])
             if len(coords) == 2:
                 self.parking_places.append(ParkingPlace([int(x) for x in coords[0].split(',')], [int(y) for y in coords[1].split(',')]))
+
+    def load_spaces_annotation_json(self, labels, scale_factor):
+        self.parking_places = []
+        for place in [l['path'] for l in labels if l['type'] == 'path']:
+            if len(place) >= 3:
+                self.parking_places.append(ParkingPlace([int(point[1] / scale_factor) for point in place if len(point) == 3], [int(point[2] / scale_factor)  for point in place if len(point) == 3]))
 
     def load_image_source(self, image):
         # if image.shape[2] == 3:
