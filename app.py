@@ -9,7 +9,7 @@ import widgets.preview_result as preview_result
 def load_model():
     return po.ParkingOccupancy(torch.hub.load('ultralytics/yolov5', 'custom', path='weights\coco-voc.pt', verbose=False, force_reload=True))
 
-st.set_page_config(layout="wide", page_title="Parking spaces occupancy",)
+st.set_page_config(layout="wide", page_title="Parking spaces occupancy")
 st.title("THE PROBLEM OF MONITORING THE CONGESTION OF PARKING SPACES")
 annotation_ready = False
 with st.spinner('Wait for the model to load'):

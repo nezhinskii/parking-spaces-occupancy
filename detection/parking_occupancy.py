@@ -25,12 +25,13 @@ class ParkingOccupancy:
     CONFIDENCE_TRESHOLD = 0.5
 
     def __init__(self, model):
+        self.parking_places = None
         self.model = model
 
     def load_spaces_annotation_csv(self, labels):
         self.parking_places = []
         for _, row in labels.iterrows():
-            coords = re.findall(r'(?<=\[)(?:\d+,?)+(?=\])',row[5])
+            coords = re.findall(r'(?<=\[)(?:\d+,? ?)+(?=\])',row[5])
             if len(coords) == 2:
                 self.parking_places.append(ParkingPlace([int(x) for x in coords[0].split(',')], [int(y) for y in coords[1].split(',')]))
 
