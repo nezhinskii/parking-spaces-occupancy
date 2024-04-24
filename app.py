@@ -9,7 +9,11 @@ from ultralytics import YOLO
 @st.cache_resource(show_spinner=False)
 def load_model():
     model = YOLO('weights/v8.pt')
-    print(model)
+    if torch.cuda.is_available():
+        model.cuda()
+    else:
+        model.cpu()
+    print(model.device)
     return po.ParkingOccupancy(model)
 
 st.set_page_config(layout="wide", page_title="Parking spaces occupancy")
