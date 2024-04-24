@@ -4,10 +4,13 @@ import torch
 import widgets.annotation_uploader as annotation_uploader
 import widgets.source_uploader as source_uploader
 import widgets.preview_result as preview_result
+from ultralytics import YOLO
 
 @st.cache_resource(show_spinner=False)
 def load_model():
-    return po.ParkingOccupancy(torch.hub.load('ultralytics/yolov5', 'custom', path='weights\coco-voc.pt', verbose=False, force_reload=True))
+    model = YOLO('weights/v8.pt')
+    print(model)
+    return po.ParkingOccupancy(model)
 
 st.set_page_config(layout="wide", page_title="Parking spaces occupancy")
 st.title("THE PROBLEM OF MONITORING THE CONGESTION OF PARKING SPACES")
