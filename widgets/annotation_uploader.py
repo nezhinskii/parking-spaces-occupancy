@@ -50,7 +50,8 @@ def upload_annotation(model):
 
 def create_annotation_csv(source, parking_places):
     result = '#filename,file_size,file_attributes,region_count,region_id,region_shape_attributes'
-    for ind, place in enumerate(parking_places):
-        result += f'\n{source.name},{source.size},{{}},{len(parking_places)},{ind},'
+    for key in parking_places:
+        place = parking_places[key]
+        result += f'\n{source.name},{source.size},{{}},{len(parking_places)},{key},'
         result += f'"{{""name"":""polygon"",""all_points_x"":{place.x_coords},""all_points_y"":{place.y_coords}}}"'
     return result

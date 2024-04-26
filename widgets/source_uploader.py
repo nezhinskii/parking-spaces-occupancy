@@ -7,7 +7,6 @@ def upload_source(model):
     uploaded_source = st.file_uploader("none", type = [".img", ".jpg", ".png"], label_visibility='collapsed')
     if uploaded_source is not None:
         file_bytes = np.asarray(bytearray(uploaded_source.read()), dtype=np.uint8)
-        opencv_image = cv2.imdecode(file_bytes, 1)
-        model.load_image_source(opencv_image)
+        model.load_image_source(file_bytes)
         return True
     return False
