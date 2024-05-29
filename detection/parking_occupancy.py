@@ -107,7 +107,6 @@ class ParkingOccupancy:
 
     def process_stream(self, stream_url):
         def on_message(ws, message):
-            print(message)
             results = json.loads(message)
             if shared.stream_mask is None:
                 return
