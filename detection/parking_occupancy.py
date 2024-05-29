@@ -74,7 +74,6 @@ class ParkingOccupancy:
     
     def build_parking_spaces_json(self):
         results = {}
-        print(self.parking_places)
         for key in self.parking_places:
             place = self.parking_places[key]
             results[key] = place.to_json()
@@ -113,7 +112,6 @@ class ParkingOccupancy:
             if shared.stream_mask is None:
                 return
             new_mask = np.zeros((shared.stream_mask.shape[0], shared.stream_mask.shape[1], 3), dtype=np.uint8)
-            print(self.parking_places)
             for key in self.parking_places:
                 place = self.parking_places[key]
                 if results[key]:
@@ -136,7 +134,6 @@ class ParkingOccupancy:
                 "confidence": self.CONFIDENCE_TRESHOLD,
                 "parking_spaces": self.build_parking_spaces_json()
             }))
-            print("WebSocket opened")
 
         ws = websocket.WebSocketApp(f'{self.backend_url}/predict_stream'.replace('http','ws'), 
                                     on_message=on_message, 

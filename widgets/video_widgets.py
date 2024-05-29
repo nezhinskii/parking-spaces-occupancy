@@ -5,11 +5,6 @@ import streamlit as st
 import asyncio
 import widgets.shared as shared
 
-async def timer():
-    while True:
-        print("Timer event")
-        await asyncio.sleep(1)
-
 def video_results(stream_url, model):
     del st.session_state['stream_mask']
     if shared.ws is not None:
